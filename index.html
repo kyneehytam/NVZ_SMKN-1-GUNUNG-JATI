@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prodi S1 Teknik Informatika</title>
+<style>
+  :root{
+    --primary:#DF1A22;
+    --primary-light:#FBDCDC;
+    --secondary:#00853F;
+    --secondary-light:#D9F0E4;
+    --nav-bg:#F5F5F5;
+    --surface:#FFFFFF;
+    --text-primary:#111111;
+    --text-secondary:#4A4A4A;
+    --divider:#E0E0E0;
+    --accent-on-dark:#F2A900;
+    --max-width:1160px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html{
+    scroll-behavior:auto; /* we handle smoothing manually for inertia */
+  }
+
+  body{
+    font-family:'Poppins','Montserrat',system-ui,-apple-system,sans-serif;
+    color:var(--text-primary);
+    background:var(--surface);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .container{
+    max-width:var(--max-width);
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- Header ---------- */
+  .top-bar{
+    background:var(--primary);
+    padding:8px 0;
+  }
+  .top-bar .container{
+    display:flex;
+    justify-content:flex-end;
+    gap:14px;
+    max-width:none;
+    padding-left:32px;
+    padding-right:32px;
+  }
+  .top-bar a{
+    color:#fff;
+    display:flex;
+    align-items:center;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
+    will-change:transform;
+  }
+  .top-bar a:hover{
+    transform:translateY(-3px) scale(1.15);
+    opacity:.9;
+  }
+  .top-bar svg{width:16px;height:16px;fill:#fff;}
+
+  .main-nav{
+    background:rgba(223,26,34,0.08);
+    position:sticky;
+    top:0;
+    z-index:10;
+    transition:box-shadow .3s ease, background .3s ease;
+  }
+  .main-nav.scrolled{
+    background:linear-gradient(rgba(223,26,34,0.08), rgba(223,26,34,0.08)), #FFFFFF;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  }
+  .main-nav .container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:24px;
+    padding-bottom:24px;
+    max-width:none;
+    padding-left:32px;
+    padding-right:32px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-weight:700;
+    font-size:18px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .brand-mark{
+    width:56px;height:56px;
+    aspect-ratio:1/1;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+  }
+  .nav-links{
+    display:flex;
+    gap:36px;
+    list-style:none;
+  }
+  .nav-links a{
+    font-size:17px;
+    font-weight:500;
+    position:relative;
+    padding-bottom:4px;
+  }
+  .nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0%;
+    height:2px;
+    background:var(--primary);
+    transition:width .3s cubic-bezier(.65,0,.35,1);
+  }
+  .nav-links a:hover{color:var(--primary);}
+  .nav-links a:hover::after{width:100%;}
+
+  .menu-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;transition:transform .25s ease;}
+  .menu-toggle:active{transform:scale(0.85) rotate(90deg);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    aspect-ratio:21/9;
+    min-height:260px;
+    max-height:420px;
+    background:
+      linear-gradient(to top, rgba(20,10,10,0.75), rgba(20,10,10,0.15) 55%),
+      url('banner.jpg') center/cover no-repeat;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:-20% -10%;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(242,169,0,0.12), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(200,16,46,0.18), transparent 55%);
+    pointer-events:none;
+    transform:translateY(0px);
+    will-change:transform;
+  }
+  .hero-content{
+    padding:0 24px 40px 12px;
+    max-width:var(--max-width);
+    margin:0 auto;
+    width:100%;
+    position:relative;
+    z-index:1;
+    will-change:transform;
+  }
+  .hero-content h1{
+    font-size:clamp(30px, 5vw, 52px);
+    font-weight:800;
+    text-transform:uppercase;
+    color:var(--accent-on-dark);
+    line-height:1.08;
+    max-width:600px;
+    position:relative;
+    display:inline-block;
+    opacity:0;
+    transform:translateY(24px);
+    animation:heroIn .9s cubic-bezier(.22,1,.36,1) .15s forwards;
+  }
+  @keyframes heroIn{
+    to{opacity:1; transform:translateY(0);}
+  }
+  /* glitch layers */
+  .hero-content h1 .glitch-wrap{
+    position:relative;
+    display:inline-block;
+  }
+  .hero-content h1 .glitch-wrap::before,
+  .hero-content h1 .glitch-wrap::after{
+    content:attr(data-text);
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    overflow:hidden;
+    color:var(--accent-on-dark);
+    background:transparent;
+    opacity:0;
+  }
+  .hero-content h1:hover .glitch-wrap::before{
+    opacity:.85;
+    color:#ff2b58;
+    animation:glitchTop 1.6s steps(2,end) infinite;
+    clip-path:inset(0 0 55% 0);
+  }
+  .hero-content h1:hover .glitch-wrap::after{
+    opacity:.85;
+    color:#00e6d8;
+    animation:glitchBottom 1.6s steps(2,end) infinite;
+    clip-path:inset(55% 0 0 0);
+  }
+  @keyframes glitchTop{
+    0%{transform:translate(0,0);}
+    20%{transform:translate(-3px,-1px);}
+    40%{transform:translate(3px,1px);}
+    60%{transform:translate(-2px,1px);}
+    80%{transform:translate(2px,-1px);}
+    100%{transform:translate(0,0);}
+  }
+  @keyframes glitchBottom{
+    0%{transform:translate(0,0);}
+    20%{transform:translate(3px,1px);}
+    40%{transform:translate(-3px,-1px);}
+    60%{transform:translate(2px,-1px);}
+    80%{transform:translate(-2px,1px);}
+    100%{transform:translate(0,0);}
+  }
+
+  /* ---------- Section shell ---------- */
+  section{
+    padding:88px 0;
+  }
+  section.tight{padding:64px 0;}
+
+  .section-heading{
+    font-size:26px;
+    font-weight:700;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .rule{
+    width:70px;
+    height:4px;
+    background:var(--primary);
+    margin-bottom:36px;
+    transform-origin:left;
+    transform:scaleX(0);
+    transition:transform .7s cubic-bezier(.65,0,.35,1);
+  }
+  .center .rule{margin-left:auto;margin-right:auto;transform-origin:center;}
+  .center{text-align:center;}
+  .in-view .rule{transform:scaleX(1);}
+
+  /* generic reveal-on-scroll */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ---------- Profile section ---------- */
+  .profile-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+  }
+  .profile-grid h3{
+    font-size:16px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:10px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .profile-grid p{
+    color:var(--text-secondary);
+    font-size:14.5px;
+  }
+  .profile-photo{
+    margin-top:48px;
+    border-radius:14px;
+    overflow:hidden;
+    aspect-ratio:21/8;
+  }
+  .profile-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  /* ---------- Vision & Mission ---------- */
+  .vm-layout{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:48px;
+  }
+  .vm-label{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--text-secondary);
+    text-transform:uppercase;
+  }
+  .vision-box{
+    background:var(--primary-light);
+    padding:28px 32px;
+    border-radius:6px;
+    margin-bottom:40px;
+    transition:transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease;
+    will-change:transform;
+  }
+  .vision-box:hover{
+    box-shadow:0 16px 30px rgba(200,16,46,0.15);
+  }
+  .vision-box p{
+    font-style:italic;
+    font-weight:600;
+    font-size:17px;
+    color:var(--primary);
+    line-height:1.5;
+  }
+
+  .mission-list{list-style:none;}
+  .mission-item{
+    display:flex;
+    gap:24px;
+    padding:20px 0;
+    border-top:1px solid var(--divider);
+    transition:padding-left .35s cubic-bezier(.34,1.56,.64,1), background .35s ease;
+  }
+  .mission-item:last-child{border-bottom:1px solid var(--divider);}
+  .mission-item:hover{
+    padding-left:10px;
+    background:linear-gradient(90deg, rgba(200,16,46,0.05), transparent);
+  }
+  .mission-number{
+    font-size:22px;
+    font-weight:800;
+    color:var(--primary);
+    flex:0 0 40px;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), color .35s ease;
+  }
+  .mission-item:hover .mission-number{
+    transform:scale(1.2);
+    color:var(--accent-on-dark);
+  }
+  .mission-text{
+    color:var(--text-secondary);
+    font-size:14.5px;
+    padding-top:2px;
+  }
+
+  /* ---------- Facilities ---------- */
+  .facilities-intro{
+    max-width:640px;
+    margin:0 auto 56px;
+    color:var(--text-secondary);
+    font-size:15px;
+  }
+  .facility-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:48px;
+  }
+  .facility-card{
+    text-align:center;
+    padding:28px 20px;
+    border-radius:12px;
+    transition:box-shadow .4s ease, transform .1s linear;
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .facility-card--accent{
+    box-shadow:0 0 0 1px var(--secondary-light);
+  }
+  .facility-card:hover{
+    box-shadow:0 0 0 3px var(--primary), 0 20px 40px rgba(0,0,0,0.08);
+  }
+  .facility-card:nth-child(2):hover{
+    box-shadow:0 0 0 3px var(--primary), 0 20px 40px rgba(0,133,63,0.18);
+  }
+  .facility-icon{
+    width:44px;height:44px;
+    aspect-ratio:1/1;
+    margin:0 auto 16px;
+    color:var(--primary);
+    transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+  }
+  .facility-card:hover .facility-icon{
+    transform:scale(1.15) rotate(-6deg) translateZ(20px);
+  }
+  .facility-icon svg{width:100%;height:100%;stroke:var(--primary);fill:none;stroke-width:1.6;}
+  .facility-photo{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:20px;
+    display:block;
+    transition:transform .4s ease;
+  }
+  .facility-card:hover .facility-photo{
+    transform:scale(1.03);
+  }
+  .facility-card h4{
+    font-size:15px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:8px;
+  }
+  .facility-card p{
+    font-size:13.5px;
+    color:var(--text-secondary);
+    max-width:230px;
+    margin:0 auto;
+  }
+
+  /* ---------- Kegiatan & Kolaborasi ---------- */
+  .kegiatan-intro{
+    max-width:720px;
+    color:var(--text-secondary);
+    font-size:15px;
+    margin-bottom:8px;
+  }
+  .activity-list{
+    list-style:none;
+    margin:40px 0 56px;
+  }
+  .activity-item{
+    padding:22px 0;
+    border-top:1px solid var(--divider);
+    transition:padding-left .35s cubic-bezier(.34,1.56,.64,1), background .35s ease;
+  }
+  .activity-item:last-child{border-bottom:1px solid var(--divider);}
+  .activity-item:hover{
+    padding-left:10px;
+    background:linear-gradient(90deg, rgba(200,16,46,0.05), transparent);
+  }
+  .activity-item h4{
+    font-size:15.5px;
+    font-weight:700;
+    color:var(--primary);
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+    margin-bottom:8px;
+  }
+  .activity-item p{
+    color:var(--text-secondary);
+    font-size:14.5px;
+    max-width:820px;
+  }
+
+  .gallery-label{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--text-secondary);
+    text-transform:uppercase;
+    margin-bottom:20px;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-auto-rows:170px;
+    gap:16px;
+  }
+  .gallery-slot{
+    position:relative;
+    border-radius:10px;
+    background:var(--primary-light);
+    overflow:hidden;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease;
+    transition-delay:calc(var(--i, 0) * 0.04s);
+  }
+  .gallery-slot.feature{
+    grid-column:span 2;
+    grid-row:span 2;
+  }
+  .gallery-slot:hover{
+    transform:scale(1.035);
+    box-shadow:0 0 0 3px var(--primary), 0 16px 28px rgba(0,0,0,0.2);
+    z-index:2;
+  }
+  .gallery-slot img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .gallery-caption{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    padding:12px 14px;
+    background:linear-gradient(to top, rgba(17,17,17,0.78), rgba(17,17,17,0));
+    color:#fff;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    line-height:1.3;
+    transform:translateY(65%);
+    opacity:0;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .gallery-slot:hover .gallery-caption{
+    transform:translateY(0);
+    opacity:1;
+  }
+  .gallery-slot.feature .gallery-caption{
+    transform:translateY(0);
+    opacity:1;
+    padding:22px 24px;
+    font-size:17px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .gallery-slot.feature .gallery-caption span{
+    display:block;
+    margin-top:6px;
+    font-size:12.5px;
+    font-weight:500;
+    text-transform:none;
+    opacity:0.85;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--nav-bg);
+    padding:28px 0;
+    text-align:center;
+    font-size:13px;
+    color:var(--text-secondary);
+  }
+
+  /* stagger helper */
+  .stagger-1{transition-delay:.05s;}
+  .stagger-2{transition-delay:.15s;}
+  .stagger-3{transition-delay:.25s;}
+
+  /* ---------- Responsive ---------- */
+
+  /* Tablet & below: switch nav to hamburger dropdown to avoid the
+     menu row overflowing/overlapping on narrower screens */
+  @media (max-width: 1024px){
+    .main-nav .container{padding-left:20px;padding-right:20px;}
+    .nav-links{
+      position:absolute;
+      top:100%;left:0;right:0;
+      background:#FBE7E7;
+      flex-direction:column;
+      padding:16px 24px;
+      gap:16px;
+      display:none;
+      box-shadow:0 10px 20px rgba(0,0,0,0.08);
+    }
+    .nav-links.open{display:flex;}
+    .menu-toggle{display:block;}
+  }
+
+  /* Tablet (portrait/landscape) */
+  @media (max-width: 1024px) and (min-width: 601px){
+    .facility-grid{grid-template-columns:repeat(2, 1fr);gap:32px;}
+    .gallery-grid{grid-template-columns:repeat(3, 1fr);grid-auto-rows:150px;}
+    .gallery-slot.feature{grid-column:span 2;grid-row:span 2;}
+    .vm-layout{grid-template-columns:200px 1fr;gap:32px;}
+    .hero{aspect-ratio:16/9;min-height:240px;max-height:380px;}
+    .container{padding:0 20px;}
+  }
+
+  /* Small tablet / large phone */
+  @media (max-width: 820px){
+    .profile-grid{grid-template-columns:1fr;gap:32px;}
+    .vm-layout{grid-template-columns:1fr;gap:20px;}
+  }
+
+  /* Phone */
+  @media (max-width: 600px){
+    .brand{font-size:15px;gap:10px;}
+    .brand-mark{width:44px;height:44px;}
+    .facility-grid{grid-template-columns:1fr;gap:40px;}
+    .gallery-grid{grid-template-columns:repeat(2, 1fr);grid-auto-rows:120px;gap:12px;}
+    .gallery-slot.feature{grid-column:span 2;grid-row:span 2;}
+    .hero{aspect-ratio:4/3;min-height:220px;max-height:340px;}
+    .hero-content{padding:0 16px 28px;}
+    .container{padding:0 16px;}
+    section{padding:48px 0;}
+    .activity-item p{max-width:100%;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="container">
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .25 2.5.42.6.24 1 .53 1.5 1 .47.47.76.9 1 1.5.17.5.36 1.3.42 2.5.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2-.42 2.5-.24.6-.53 1-1 1.5-.47.47-.9.76-1.5 1-.5.17-1.3.36-2.5.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2-.25-2.5-.42-.6-.24-1-.53-1.5-1-.47-.47-.76-.9-1-1.5-.17-.5-.36-1.3-.42-2.5C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2 .42-2.5.24-.6.53-1 1-1.5.47-.47.9-.76 1.5-1 .5-.17 1.3-.36 2.5-.42C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.14 0-3.5 0-4.75.07-1 .05-1.6.2-1.98.34-.5.2-.86.43-1.24.8-.37.38-.6.74-.8 1.24-.14.38-.29.98-.34 1.98C2.8 8.5 2.8 8.86 2.8 12s0 3.5.07 4.75c.05 1 .2 1.6.34 1.98.2.5.43.86.8 1.24.38.37.74.6 1.24.8.38.14.98.29 1.98.34 1.25.06 1.61.07 4.75.07s3.5 0 4.75-.07c1-.05 1.6-.2 1.98-.34.5-.2.86-.43 1.24-.8.37-.38.6-.74.8-1.24.14-.38.29-.98.34-1.98.06-1.25.07-1.61.07-4.75s0-3.5-.07-4.75c-.05-1-.2-1.6-.34-1.98-.2-.5-.43-.86-.8-1.24a3.3 3.3 0 0 0-1.24-.8c-.38-.14-.98-.29-1.98-.34C15.5 4 15.14 4 12 4zm0 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4zm5.7-2a1.05 1.05 0 1 1-2.1 0 1.05 1.05 0 0 1 2.1 0z"/></svg>
+      </a>
+      <a href="#" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M13.5 21v-7.8h2.6l.4-3h-3v-1.9c0-.9.25-1.5 1.55-1.5H16.6V4.14C16.3 4.1 15.3 4 14.15 4c-2.4 0-4.05 1.47-4.05 4.16v2.04H7.5v3h2.6V21h3.4z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <nav class="main-nav" id="mainNav">
+    <div class="container">
+     <div class="brand">
+  <img src="UMC-1.png" alt="Logo Prodi" class="brand-mark">
+  <span>S1 Teknik<br>Informatika</span>
+</div>
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+      <ul class="nav-links">
+        <li><a href="#beranda" class="js-scroll">Beranda</a></li>
+        <li><a href="#visi-misi" class="js-scroll">Visi &amp; Misi</a></li>
+        <li><a href="#fasilitas" class="js-scroll">Fasilitas Akademik</a></li>
+        <li><a href="#kegiatan" class="js-scroll">Kegiatan &amp; Kolaborasi</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="beranda">
+    <div class="hero-content">
+      <h1><span class="glitch-wrap" data-text="Prodi S1 Teknik Informatika">Prodi S1<br>Teknik<br>Informatika</span></h1>
+    </div>
+  </header>
+
+  <section class="tight">
+    <div class="container">
+      <h2 class="section-heading reveal">Profile Singkat Prodi S1 Teknik Informatika</h2>
+      <div class="rule reveal"></div>
+      <div class="profile-grid">
+        <div class="reveal stagger-1">
+          <h3>Tentang Kami</h3>
+          <p>UMC menyiapkan calon sarjana teknologi informasi yang tak hanya cakap secara teknis, tapi juga memegang teguh nilai-nilai keislaman dan kebangsaan dalam setiap langkah karier mereka.</p>
+        </div>
+        <div class="reveal stagger-2">
+          <h3>Fokus Pembelajaran</h3>
+          <p>Kurikulum dirancang berdampingan dengan kebutuhan industri digital saat ini — mulai dari pengembangan perangkat lunak, kecerdasan buatan, hingga sistem jaringan — dipadukan dengan bimbingan praktik langsung agar lulusan siap kerja sekaligus siap membangun usaha sendiri di bidang teknologi.</p>
+        </div>
+      </div>
+      <div class="profile-photo reveal stagger-3">
+        <img src="FOTO KEGIATAN PRODI/gallery-praktik-1.jpeg" alt="Kegiatan praktik mahasiswa Teknik Informatika">
+      </div>
+    </div>
+  </section>
+
+  <section id="visi-misi">
+    <div class="container">
+      <div class="vm-layout">
+        <div class="vm-label reveal">Visi &amp; Misi<br>Teknik Informatika UMC</div>
+        <div>
+          <div class="vm-label reveal" style="margin-bottom:8px;">Visi</div>
+          <div class="vision-box reveal">
+            <p>"Menjadi Program Studi yang Unggul dalam mencetak Tenaga terampil yang Islami dan Mandiri di Wilayah Jawa Barat pada tahun 2024"</p>
+          </div>
+
+          <div class="vm-label reveal" style="margin-bottom:8px;">Misi</div>
+          <ul class="mission-list">
+            <li class="mission-item reveal stagger-1">
+              <span class="mission-number">01</span>
+              <span class="mission-text">Menanamkan nilai-nilai Islam kepada seluruh civitas akademika Program Studi S1 Teknik Informatika secara komperhensif.</span>
+            </li>
+            <li class="mission-item reveal stagger-1">
+              <span class="mission-number">02</span>
+              <span class="mission-text">Terselenggaranya pendidikan dan pengajaran yang berorientasi pada kompetensi bidang rekayasa teknologi yang sesuai dengan perkembangan kebutuhan dunia usaha dan industri.</span>
+            </li>
+            <li class="mission-item reveal stagger-2">
+              <span class="mission-number">03</span>
+              <span class="mission-text">Terselenggaranya kegiatan penelitian dalam bidang rekayasa teknologi melalui kerjasama dengan pihak industri dan instansi pemerintahan baik dalam maupun luar negeri.</span>
+            </li>
+            <li class="mission-item reveal stagger-2">
+              <span class="mission-number">04</span>
+              <span class="mission-text">Terselenggaranya kegiatan pengabdian kepada masyarakat dalam bidang rekayasa teknologi.</span>
+            </li>
+            <li class="mission-item reveal stagger-3">
+              <span class="mission-number">05</span>
+              <span class="mission-text">Tumbuh kembangnya sikap kewirausahaan dalam bidang rekayasa teknologi di kalangan civitas akademika program Studi S1 Teknik Informatika.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fasilitas" class="center">
+    <div class="container">
+      <h2 class="section-heading reveal">Fasilitas Akademik</h2>
+      <div class="rule reveal"></div>
+      <p class="facilities-intro reveal">Untuk menunjang kegiatan belajar mengajar yang berorientasi pada kompetensi rekayasa teknologi, Program Studi S1 Teknik Informatika menyediakan sarana yang memadai.</p>
+
+      <div class="facility-grid">
+        <div class="facility-card reveal stagger-1 js-tilt">
+          <img class="facility-photo" src="FOTO KEGIATAN PRODI/gallery-lab-komputer.jpg" alt="Laboratorium Komputer">
+          <div class="facility-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg>
+          </div>
+          <h4>Laboratorium Komputer</h4>
+          <p>Fasilitas lab yang dirancang khusus untuk praktik pemrograman, rekayasa perangkat lunak, dan pengolahan data.</p>
+        </div>
+        <div class="facility-card facility-card--accent reveal stagger-2 js-tilt">
+          <img class="facility-photo" src="FOTO KEGIATAN PRODI/gallery-pembelajaran.jpeg" alt="Ruang Kelas Interaktif">
+          <div class="facility-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="12" height="9" rx="1"/><path d="M17 9h4v7h-4M3 20h12M9 13v3"/></svg>
+          </div>
+          <h4>Ruang Kelas Interaktif</h4>
+          <p>Ruang kelas kondusif ber-AC dengan proyektor / smartboard untuk presentasi dan pengajaran visual.</p>
+        </div>
+        <div class="facility-card reveal stagger-3 js-tilt">
+          <img class="facility-photo" src="FOTO KEGIATAN PRODI/gallery-jaringan-komputer.jpeg" alt="Ruang Praktik Jaringan">
+          <div class="facility-icon">
+            <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M6 8.2V13a2 2 0 0 0 2 2h1M18 8.2V13a2 2 0 0 0-2 2h-1M12 15.8V13"/></svg>
+          </div>
+          <h4>Ruang Praktik Jaringan</h4>
+          <p>Area praktik perakitan hardware dan instalasi infrastruktur jaringan komputer secara langsung.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kegiatan">
+    <div class="container">
+      <h2 class="section-heading reveal">Pengabdian, Kolaborasi &amp; Kegiatan Ilmiah</h2>
+      <div class="rule reveal"></div>
+      <p class="kegiatan-intro reveal">Sejalan dengan misi prodi, civitas akademika secara aktif terjun langsung membawa solusi teknologi ke tengah masyarakat.</p>
+
+      <ul class="activity-list">
+        <li class="activity-item reveal stagger-1">
+          <h4>Aksi Nyata Pengabdian Masyarakat</h4>
+          <p>Mahasiswa dan dosen berkolaborasi dalam program tingkat nasional untuk mendukung pembangunan daerah, salah satunya melalui pemetaan potensi desa Cikondang untuk menyongsong Indonesia Emas 2045. Program ini melatih kemandirian dan keterampilan mahasiswa di lapangan kerja nyata.</p>
+        </li>
+        <li class="activity-item reveal stagger-2">
+          <h4>Seminar Nasional</h4>
+          <p>Prodi turut andil dalam penyelenggaraan diskusi strategis, seperti Seminar Nasional "Penguatan Peran Desa Dalam Mewujudkan Ketahanan Pangan Nasional" pada 21 Agustus 2026 yang melibatkan Kepala Program Studi Teknik Informatika sebagai narasumber.</p>
+        </li>
+        <li class="activity-item reveal stagger-3" style="border-top-color:var(--secondary);border-top-width:2px;">
+          <h4>Workshop &amp; Kemitraan Strategis</h4>
+          <p>Penyelenggaraan "Workshop Machine Learning dan AI yang Beretika" untuk membekali mahasiswa dengan perkembangan teknologi cerdas terkini. Agenda ini dirangkaikan dengan penandatanganan Memorandum of Understanding (MoU) antara Universitas Muhammadiyah Cirebon dengan KPU Kabupaten Cirebon.</p>
+        </li>
+      </ul>
+
+      <div class="gallery-label reveal">Dokumentasi Kegiatan</div>
+      <div class="gallery-grid">
+        <div class="gallery-slot feature reveal" style="--i:0">
+          <img src="FOTO KEGIATAN PRODI/gallery-uts.jpg" alt="Ujian Tengah Semester">
+          <div class="gallery-caption">Ujian Tengah Semester<span>Mahasiswa Teknik Informatika mengikuti UTS di ruang kelas</span></div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:1">
+          <img src="FOTO KEGIATAN PRODI/gallery-lab-komputer.jpg" alt="Laboratorium Komputer">
+          <div class="gallery-caption">Laboratorium Komputer</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:2">
+          <img src="FOTO KEGIATAN PRODI/gallery-praktik-1.jpeg" alt="Praktik mahasiswa">
+          <div class="gallery-caption">Praktik Mahasiswa</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:3">
+          <img src="FOTO KEGIATAN PRODI/gallery-praktik-2.jpeg" alt="Proses pembelajaran di kelas">
+          <div class="gallery-caption">Proses Pembelajaran</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:4">
+          <img src="FOTO KEGIATAN PRODI/gallery-praktik-3.jpeg" alt="Ruang praktik komputer">
+          <div class="gallery-caption">Ruang Praktik Komputer</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:5">
+          <img src="FOTO KEGIATAN PRODI/gallery-jaringan-komputer.jpeg" alt="Praktik jaringan komputer">
+          <div class="gallery-caption">Praktik Jaringan Komputer</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:6">
+          <img src="FOTO KEGIATAN PRODI/gallery-pembelajaran.jpeg" alt="Pembelajaran pemrograman">
+          <div class="gallery-caption">Pembelajaran Pemrograman</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:7">
+          <img src="FOTO KEGIATAN PRODI/gallery-peta-cikondang-1.jpeg" alt="Peta administrasi Desa Cikondang">
+          <div class="gallery-caption">Peta Administrasi Desa Cikondang</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:8">
+          <img src="FOTO KEGIATAN PRODI/gallery-pengabdian-poster.jpeg" alt="Pengabdian Desa Tingkat Nasional">
+          <div class="gallery-caption">Pengabdian Desa Tingkat Nasional</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:9">
+          <img src="FOTO KEGIATAN PRODI/gallery-presentasi-peresmian.jpeg" alt="Presentasi dan peresmian pengabdian desa">
+          <div class="gallery-caption">Presentasi &amp; Peresmian Pengabdian Desa</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:10">
+          <img src="FOTO KEGIATAN PRODI/gallery-workshop-ai-mou.jpeg" alt="Workshop Machine Learning dan AI">
+          <div class="gallery-caption">Workshop AI &amp; Penandatanganan MoU</div>
+        </div>
+        <div class="gallery-slot reveal" style="--i:11">
+          <img src="FOTO KEGIATAN PRODI/gallery-seminar-banner.jpeg" alt="Seminar Nasional Ketahanan Pangan">
+          <div class="gallery-caption">Seminar Nasional Ketahanan Pangan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 Prodi S1 Teknik Informatika — UMC
+  </footer>
+
+<script>
+(function(){
+  /* ---------- Scroll-triggered reveal animations ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el=>io.observe(el));
+
+  /* section-heading rule + center rule share .reveal, already handled */
+
+  /* ---------- Sticky nav shadow on scroll ---------- */
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', ()=>{
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive:true });
+
+  /* ---------- Gentle parallax on hero (inertia-flavored) ---------- */
+  const hero = document.querySelector('.hero');
+  const heroContent = document.querySelector('.hero-content');
+  let targetY = 0, currentY = 0;
+  function parallaxLoop(){
+    targetY = Math.min(window.scrollY, 400) * 0.18;
+    currentY += (targetY - currentY) * 0.08; // easing towards target = inertia feel
+    if(heroContent) heroContent.style.transform = `translateY(${currentY}px)`;
+    if(hero) hero.style.setProperty('--p', currentY);
+    requestAnimationFrame(parallaxLoop);
+  }
+  requestAnimationFrame(parallaxLoop);
+
+  /* ---------- Inertia-based smooth scroll for nav links ---------- */
+  function easeInOutCubic(t){
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  }
+  function smoothScrollTo(targetY, duration){
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const startTime = performance.now();
+    function step(now){
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeInOutCubic(progress);
+      window.scrollTo(0, startY + distance * eased);
+      if(progress < 1){
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  document.querySelectorAll('.js-scroll').forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      const href = link.getAttribute('href');
+      if(href && href.startsWith('#')){
+        const target = document.querySelector(href);
+        if(target){
+          e.preventDefault();
+          const navHeight = nav.offsetHeight + 56; // top-bar + nav
+          const destY = target.getBoundingClientRect().top + window.scrollY - navHeight;
+          smoothScrollTo(Math.max(destY,0), 900);
+          document.querySelector('.nav-links').classList.remove('open');
+        }
+      }
+    });
+  });
+
+  /* ---------- Gentle tilt effect on facility cards ---------- */
+  const tiltEls = document.querySelectorAll('.js-tilt');
+  tiltEls.forEach(card=>{
+    let rect;
+    function onMove(e){
+      rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;  // 0..1
+      const py = (e.clientY - rect.top) / rect.height;  // 0..1
+      const rotateY = (px - 0.5) * 10;   // max 5deg either way
+      const rotateX = (0.5 - py) * 10;
+      card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    }
+    function onLeave(){
+      card.style.transform = 'perspective(700px) rotateX(0) rotateY(0) translateY(0)';
+    }
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', onLeave);
+  });
+})();
+</script>
+
+</body>
+</html>
