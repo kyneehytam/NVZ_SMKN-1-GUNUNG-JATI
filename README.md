@@ -1,0 +1,2 @@
+# NVZ_SMKN-1-GUNUNG-JATI
+idk man
